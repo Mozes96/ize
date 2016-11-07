@@ -1,0 +1,95 @@
+package labx;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+/*
+ * A hallgatók adatait tároló osztály.
+ */
+public class StudentData extends AbstractTableModel {
+
+    /*
+     * Ez a tagváltozó tárolja a hallgatói adatokat.
+     * NE MÓDOSÍTSD!
+     */
+    List<Student> students = new ArrayList<Student>();
+
+	public int getColumnCount() {
+		return 4;
+	}
+	
+	public int getRowCount()
+	{
+		int i;
+		for(i = 0; i < students.size(); i++) {}
+		return i;
+	}
+
+	public Object getValueAt(int rowIndex, int columnIndex) 
+	{ 
+	        Student student = students.get(rowIndex); 
+	        switch(columnIndex) 
+	        { 
+	        case 0: 
+	        	return student.getName(); 
+	        case 1: 
+	        	return student.getNeptun(); 
+	        case 2: 
+	        	return student.hasSignature(); 
+	        default: 
+	        	return student.getGrade(); 
+	        } 
+	} 
+	
+	public String getColumnName(int columnIndex)
+	{
+		switch(columnIndex)
+		{
+			case 0: return "Név";
+			case 1: return "Neptun";
+			case 2: return "Aláírás";
+			case 3: return "Jegy";
+			default: return "ASD";
+		}
+	}
+	
+	public Class<?> getColumnClass(int columnIndex)
+	{
+		switch(columnIndex)
+		{
+			case 2: return Boolean.class;
+			case 3: return Integer.class;
+			default: return String.class;
+		}
+	}
+	
+	public boolean isCellEditable(int rowIndex, int columnIndex)
+	{
+		switch(columnIndex)
+		{
+			case 2: return true;
+			case 3: return true;
+			default: return false;
+		}
+	}
+	
+	public void setValueAt(Object aValue, int rowIndex, int columnIndex)
+	{
+		switch(columnIndex)
+		{
+			case 2: students.get(rowIndex).setSignature((Boolean) aValue); break;
+			case 3: students.get(rowIndex).setGrade((Integer) aValue); break;
+		}
+	}
+	
+	public void addStudent(String nev, String neptun)
+	{
+		Student s = new Student(nev, neptun, false, 0);
+		students.add(s);
+		fireTableRowsInserted(students.size(), students.size());
+	}
+}
